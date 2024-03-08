@@ -4,6 +4,13 @@ training/
 lightning_logs/
 image_log/
 
+# OurIgnores
+image_log/
+models/
+model_checkpoints/
+*.jpg
+*.png
+
 *.pth
 *.pt
 *.ckpt

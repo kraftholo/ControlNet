@@ -8,9 +8,11 @@ from torch.utils.data import Dataset
 class MyDataset(Dataset):
     def __init__(self):
         self.data = []
-        with open('./training/fill50k/prompt.json', 'rt') as f:
-            for line in f:
-                self.data.append(json.loads(line))
+        with open(r"C:\Users\Rasmu\Repos\ControlNet\dataset_stuff\image_defects_results_with_duplicates.json", 'rt') as f:
+            self.data = json.load(f)
+            # for line in f:
+            #     print(line)
+            #     self.data.append(json.loads(line))
 
     def __len__(self):
         return len(self.data)
@@ -22,8 +24,8 @@ class MyDataset(Dataset):
         target_filename = item['target']
         prompt = item['prompt']
 
-        source = cv2.imread('./training/fill50k/' + source_filename)
-        target = cv2.imread('./training/fill50k/' + target_filename)
+        source = cv2.imread(source_filename)
+        target = cv2.imread(target_filename)
 
         # Do not forget that OpenCV read images in BGR order.
         source = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
@@ -37,3 +39,5 @@ class MyDataset(Dataset):
 
         return dict(jpg=target, txt=prompt, hint=source)
 
+
+#dataset = MyDataset()
