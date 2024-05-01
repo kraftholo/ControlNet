@@ -4,11 +4,12 @@ import numpy as np
 
 from torch.utils.data import Dataset
 
+controlNetCaptionsPath = r"E:\thesis\repos\ControlNet\control_net_captions.json"
 
 class MyDataset(Dataset):
     def __init__(self):
         self.data = []
-        with open(r"C:\Users\Rasmu\Repos\ControlNet\dataset_stuff\image_defects_results_with_duplicates.json", 'rt') as f:
+        with open(controlNetCaptionsPath, 'rt') as f:
             self.data = json.load(f)
             # for line in f:
             #     print(line)
