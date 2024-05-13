@@ -25,12 +25,12 @@ gradio:
   instdiffinput_path: ${inferencePaths.maskRCNN_inference_output}\gen_instdiffinput_final.json
 
   model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
-  trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+  trained_controlnet_model: ${filePaths.current_repo}\training-runs\run_0002 (Continued run with 69690 mirrored images)\epoch=1-step=45999.ckpt
 
 
 inference:
   model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
-  trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+  trained_controlnet_model: ${filePaths.current_repo}\training-runs\run_0002 (Continued run with 69690 mirrored images)\epoch=1-step=45999.ckpt
   control_net_captions_path: ${controlNetCaptions.captions_output}
 
   controls:
@@ -45,7 +45,7 @@ inference:
     seed: -1 
     eta: 0.0
   
-  output_path : ${inferencePaths.control_net_inference_output}\images
+  output_path : ${inferencePaths.control_net_inference_output}\\${filePaths.img_sub_dir}
 
 
 

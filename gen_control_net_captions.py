@@ -9,6 +9,11 @@ def read_json_file(json_file_path):
         data = json.load(file)
     return data 
 
+
+#if \controlNet_out doesnt exist, make it
+if not os.path.exists(repoConfig.inferencePaths.control_net_inference_output):
+    os.makedirs(repoConfig.inferencePaths.control_net_inference_output)
+
 imgInputDirRoot = repoConfig.controlNetCaptions.gen_img_dir
 inputImgDir = os.path.join(imgInputDirRoot, repoConfig.filePaths.img_sub_dir)
 segmentedDir = os.path.join(imgInputDirRoot, repoConfig.filePaths.mask_sub_dir)
@@ -17,6 +22,8 @@ outputPath = repoConfig.controlNetCaptions.captions_output
 
 controlNetInput = read_json_file(repoConfig.controlNetCaptions.instdiffinput_path)
 print(f'Num of images in controlNetInput (instDiffInput): {len(controlNetInput)}')
+
+# print(f'GT defect label : ')
 
 controlNetCaptions = []
 
