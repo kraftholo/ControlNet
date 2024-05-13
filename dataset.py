@@ -3,8 +3,9 @@ import cv2
 import numpy as np
 
 from torch.utils.data import Dataset
-
-controlNetCaptionsPath = r"E:\thesis\repos\ControlNet\control_net_captions.json"
+from configurationLoader import returnRepoConfig
+repoConfig = returnRepoConfig('control_net_cfg.yaml')
+controlNetCaptionsPath = repoConfig.dataset.control_net_captions_path
 
 class MyDataset(Dataset):
     def __init__(self):
