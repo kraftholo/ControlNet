@@ -1,0 +1,55 @@
+repo_name : ControlNet
+
+filePaths:
+  current_repo: ${filePaths.repos_path}\\${repo_name}
+
+controlNetCaptions:
+  # Read from the augmented images folder
+  gen_img_dir :  ${inferencePaths.copy_paste_augmentation_output}
+
+  #Output inside the controlnet output folder pipeline
+  captions_output: ${inferencePaths.control_net_inference_output}\gen-control-net-captions.json
+
+  #TInput instdiffinput from pipeline's previous step
+  instdiffinput_path: ${inferencePaths.maskRCNN_inference_output}\gen_instdiffinput_final.json
+
+
+gradio:
+  placeholder:
+    prompt: "Chicken with GT_DrumBruiseLeft:2"
+    a_prompt: 'best quality, extremely detailed'
+    n_prompt: 'longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality'
+
+  default_gen_img_dir: ${inferencePaths.copy_paste_augmentation_output} 
+  instance_pool_path: ${inferencePaths.maskRCNN_inference_output}\\${jsonPaths.instance_pool}
+  instdiffinput_path: ${inferencePaths.maskRCNN_inference_output}\gen_instdiffinput_final.json
+
+  model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
+  trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+
+
+inference:
+  model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
+  trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+  control_net_captions_path: ${controlNetCaptions.captions_output}
+
+  controls:
+    a_prompt: ${gradio.placeholder.a_prompt}
+    n_prompt: ${gradio.placeholder.n_prompt}
+    num_samples: 1
+    image_resolution: 512
+    ddim_steps: 50
+    guess_mode: False
+    strength: 1.0
+    scale: 9.0
+    seed: -1 
+    eta: 0.0
+  
+  output_path : ${inferencePaths.control_net_inference_output}\images
+
+
+
+
+
+
+

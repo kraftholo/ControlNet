@@ -41,3 +41,11 @@ gradio:
 
   model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
   trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+
+
+inference:
+  model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
+  trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+  control_net_captions_path: ${controlNetCaptions.captions_output}
+
+
