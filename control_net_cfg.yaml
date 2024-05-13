@@ -1,0 +1,25 @@
+repo_name: ControlNet
+
+filePaths:
+  current_repo: ${filePaths.repos_path}\\${repo_name}
+
+
+gradio:
+  placeholder:
+    prompt: "Chicken with GT_DrumBruiseLeft:2"
+    a_prompt: 'best quality, extremely detailed'
+    n_prompt: 'longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality'
+
+
+  default_img_dir: ${filePaths.img_dir}
+  instance_pool_path: ${filePaths.dataset_folder_path}\\${jsonPaths.instance_pool}
+  instdiffinput_path: ${filePaths.dataset_folder_path}\\${jsonPaths.final_instdiff_input}
+
+  model_yaml_path: ${filePaths.current_repo}\models\cldm_v15.yaml
+  trained_controlnet_model: ${filePaths.current_repo}\model_checkpoints\run_0004 (removed 0 annotations)\epoch=9-step=16799.ckpt
+
+controlNetCaptions:
+  img_dir: ${filePaths.aug_dir}
+  captions_output: ${filePaths.current_repo}\\control_net_captions.json
+  instdiffinput_path: ${filePaths.dataset_folder_path}\\${jsonPaths.final_instdiff_input}
+

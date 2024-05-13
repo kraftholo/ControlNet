@@ -13,14 +13,15 @@ from annotator.util import resize_image, HWC3
 from annotator.uniformer import UniformerDetector
 from cldm.model import create_model, load_state_dict
 from cldm.ddim_hacked import DDIMSampler
+from configurationLoader import returnRepoConfig
+repoConfig = returnRepoConfig("control_net_cfg.yaml")
 
-
-import pasteAnnotationFromPlan as custom_paste
+from gradio_seg2image_helper import instance_pool_pasting
 
 apply_uniformer = UniformerDetector()
 
-model = create_model('E:/thesis/repos/ControlNet/models/cldm_v15.yaml').cpu()
-model.load_state_dict(load_state_dict('E:/thesis/repos/ControlNet/model_checkpoints/run_0004 (removed 0 annotations)/epoch=9-step=16799.ckpt', location='cuda'))
+model = create_model(repoConfig.gradio.model_yaml_path).cpu()
+model.load_state_dict(load_state_dict(repoConfig.gradio.trained_controlnet_model, location='cuda'))
 model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
@@ -69,7 +70,7 @@ def process(input_image, prompt, a_prompt, n_prompt, num_samples, image_resoluti
     return results
 
 # Call this function at the start to load your images
-image_directory = "E:/thesis/datasets/all-train-images-512-front"
+image_directory = repoConfig.gradio.default_img_dir
 IMG_HEIGHT = 512
 
 # print(f"Loading images from {image_directory}")
@@ -87,7 +88,7 @@ with block:
             gr.Markdown("## Upload Image ")
             input_image = gr.Image(source='upload', type="numpy")
             image_name = gr.Textbox(label="Image Name", placeholder="ChosenImageNameXYZ.png (Enter Manually)")
-            prompt = gr.Textbox(label="Prompt",placeholder="Chicken with GT_DrumBruiseLeft:2")
+            prompt = gr.Textbox(label="Prompt",placeholder= repoConfig.gradio.placeholder.prompt)
             image_directory = gr.Textbox(label="Image Directory", value=image_directory)
             paste_button = gr.Button(label="Paste Defects",icon='https://img.icons8.com/ios/452/paste.png',value="Paste Defects")
             run_button = gr.Button(label="Run",icon='https://img.icons8.com/ios/452/play.png',value="Run")
@@ -102,9 +103,9 @@ with block:
                 scale = gr.Slider(label="Guidance Scale", minimum=0.1, maximum=30.0, value=9.0, step=0.1)
                 seed = gr.Slider(label="Seed", minimum=-1, maximum=2147483647, step=1, randomize=True)
                 eta = gr.Number(label="eta (DDIM)", value=0.0)
-                a_prompt = gr.Textbox(label="Added Prompt", value='best quality, extremely detailed')
-                n_prompt = gr.Textbox(label="Negative Prompt",
-                                      value='longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality')
+                a_prompt = gr.Textbox(label="Added Prompt", value= repoConfig.gradio.placeholder.a_prompt)
+                n_prompt = gr.Textbox(label="Negative Prompt", value=repoConfig.gradio.placeholder.n_prompt)
+
         with gr.Column():
             gr.Markdown("## Pasted RGB Image")
             pasted_output = gr.Image(label='Pasted Output', show_label=False, height=IMG_HEIGHT)
@@ -123,7 +124,7 @@ with block:
         # pasted_output_image: uint8 segmented_image: uint8
 
         paste_button.click(
-            fn=custom_paste.instance_pool_pasting,
+            fn= instance_pool_pasting,
             inputs=[image_name, image_directory, prompt],
             outputs=[pasted_output, segmented_output]
         )
