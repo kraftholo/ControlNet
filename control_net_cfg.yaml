@@ -1,0 +1,29 @@
+repo_name : ControlNet
+
+filePaths:
+  current_repo: ${filePaths.repos_path}\\${repo_name}
+
+captions:
+  image_dir: ${filePaths.aug_dir}
+  output_dir: ${filePaths.current_repo}\control-net-captions.json
+  inst_diff_json : ${filePaths.dataset_folder_path}\\${jsonPaths.final_instdiff_input}
+
+dataset:
+  control_net_captions_path: ${captions.output_dir}
+
+train:
+  model : ${filePaths.current_repo}\training-runs\run_0002 (Continued run with 69690 mirrored images)\epoch=1-step=45999.ckpt # Initial model path is: ${filePaths.current_repo}\models\control_sd15_ini.ckpt
+  model_config_path : ${filePaths.current_repo}\models\cldm_v15.yaml
+  description : "0003 (Sd_locked false continued with 69690 mirrored images)"
+  checkpoint_path : ${filePaths.current_repo}\training-runs\run_${train.description}
+  checkpoint_frequency : 1000
+  batch_size : 4
+  logger_frequency : 1000
+  learning_rate : 0.000002 #Standard is 1E-5, but for sd_locked false, we use 2E-6
+  sd_locked : False
+  only_mid_control : False
+  save_top_k : -1 #Save all checkpoints
+  save_weights_only : False
+  workers : 6
+  gpus : 1
+  precision : 32

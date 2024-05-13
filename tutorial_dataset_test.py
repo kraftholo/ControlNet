@@ -1,4 +1,4 @@
-from tutorial_dataset import MyDataset
+from dataset import MyDataset
 
 dataset = MyDataset()
 print(len(dataset))
