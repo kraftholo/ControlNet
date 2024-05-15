@@ -38,7 +38,7 @@ checkpoint_callback_at_step_freq = ModelCheckpoint(
 )
 checkpoint_callback_at_end_epoch = ModelCheckpoint(
     dirpath= checkpoint_path,  # Directory to save the model checkpoints
-    save_on_train_epoch_end = True,  # Save a checkpoint every end of epoch
+    save_on_train_epoch_end = False,  # Save a checkpoint every end of epoch
     save_top_k = repoConfig.train.save_top_k,  # Save all checkpoints
     save_weights_only = repoConfig.train.save_weights_only  # Save the full model checkpoint
 )
